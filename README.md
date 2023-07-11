@@ -4,6 +4,7 @@
 **Technoligies Used**
 -Django back end
 -Python
+-PostgreSQL
 
 **Notes**
 *This is a two part repository.  This code is the back end.  There is another for front end with the same naming convention.*
