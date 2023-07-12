@@ -5,7 +5,7 @@ from .models import Staff
 
 # Create your views here.
 
-class StaffView(viewsets.ReadOnlyModelViewSet):
+class StaffView(viewsets.ModelViewSet):
     serializer_class = StaffSerializer
     queryset = Staff.objects.all()
-    
+
