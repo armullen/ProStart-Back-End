@@ -16,7 +16,7 @@ class Home(APIView):
         content = {'message': 'hello'}
         return JsonResponse(content)
     
-    
+
     # ...............staff views............
 
 class StaffView(APIView):
@@ -46,16 +46,29 @@ class ProfileView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error' : 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        serializer = ProfileSerializer(data=request.data)
+        try:
+            instance = Profile.objects.get(id=request.data.get('id'))
+        except Profile.DoesNotExist:
+            return Response({'error' : 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = ProfileSerializer(instance, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'error' : 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
     
-    # def delete(self, request):
+    def delete(self, request):
+        queryset = Profile.objects.all()
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ProfileDetail(APIView):
+    def get(self, request, pk):
+        queryset = Profile.objects.get(pk=pk)
+        serializer = ProfileSerializer(queryset, many = True)
+        return Response(serializer.data)
 
     
     
