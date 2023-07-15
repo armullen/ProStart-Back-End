@@ -14,4 +14,4 @@ class CampSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('name', 'athlete', 'sport', 'positiion')
+        fields = ('name', 'athlete', 'sport', 'position')
