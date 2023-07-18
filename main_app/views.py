@@ -48,9 +48,18 @@ class ProfileView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'error' : 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request):
+    
+class ProfileDetail(APIView):
+    def get(self, request, pk):
+        profile = Profile.objects.get(pk=pk)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+    
+class ProfileEdit(APIView):
+    def put(self, request, pk):
         try:
-            instance = Profile.objects.get(id=request.data.get('id'))
+            instance = Profile.objects.get(id=pk)
         except Profile.DoesNotExist:
             return Response({'error' : 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = ProfileSerializer(instance, data=request.data)
@@ -58,19 +67,10 @@ class ProfileView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({'error' : 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+class ProfileDelete(APIView):
     def delete(self, request):
         queryset = Profile.objects.all()
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-class ProfileDetail(APIView):
-    def get(self, request, pk):
-        queryset = Profile.objects.get(pk=pk)
-        serializer = ProfileSerializer(queryset, many = True)
-        return Response(serializer.data)
-
-    
-    
-
-

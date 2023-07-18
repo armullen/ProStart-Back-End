@@ -9,7 +9,7 @@ class StaffSerializer(serializers.ModelSerializer):
 class CampSerializer(serializers.ModelSerializer):
     class Meta:
         model = Camp
-        fields = ('title', 'ageGroup', 'startDate', 'endDate', 'time', 'price')
+        fields = ('id', 'title', 'ageGroup', 'startDate', 'endDate', 'time', 'price')
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
