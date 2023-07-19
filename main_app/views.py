@@ -36,6 +36,7 @@ class CampView(APIView):
     # .......profile views................
     
 class ProfileView(APIView):
+    
     def get(self, request):
         queryset = Profile.objects.all()
         serializer = ProfileSerializer(queryset, many = True)
@@ -70,7 +71,11 @@ class ProfileEdit(APIView):
 
 
 class ProfileDelete(APIView):
-    def delete(self, request):
-        queryset = Profile.objects.all()
-        queryset.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, pk=None):
+        profile = Profile.objects.filter(id=pk)
+        
+        if profile:
+            profile.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
